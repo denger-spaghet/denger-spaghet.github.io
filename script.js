@@ -1,14 +1,15 @@
 let searchResults = [];
 
 async function searchGoogle() {
-    
     const query = document.getElementById("search-input").value;
-    const apiKey = "AIzaSyBfVRY-rP84SzOv4yugDDEkDDbuTrEqRoU";
-    const cx = "f4ee3fbe66bf04683";
-    const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${cx}`;
+    if (!query) {
+        document.getElementById("results").innerHTML = "<p>Enter a query.</p>";
+        return;
+    }
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(`http://localhost:5000/search?q=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error("Failed to fetch results");
         const data = await response.json();
 
         if (data.items) {
@@ -25,8 +26,8 @@ async function searchGoogle() {
             document.getElementById("download-btn").style.display = "none";
         }
     } catch (error) {
-        console.error("Error fetching search results:", error);
-        document.getElementById("results").innerHTML = "<p>Error fetching results. Please try again.</p>";
+        document.getElementById("results").innerHTML = "<p>Error loading search results.</p>";
+        document.getElementById("download-btn").style.display = "none";
     }
 }
 
