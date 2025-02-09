@@ -8,7 +8,7 @@ async function searchGoogle() {
     }
 
     try {
-        const response = await fetch(`http://localhost:5000/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`https://google-search-pifg.onrender.com/search?q=${encodeURIComponent(query)}`);
         if (!response.ok) throw new Error("Failed to fetch results");
         const data = await response.json();
 
